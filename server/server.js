@@ -12,11 +12,11 @@ app.use(bodyParser.json());
 
 
 
-app.get('/', (req, res) => {
+app.get('/usuario', (req, res) => {
     res.send('hola desde node');
 });
 
-app.post('/', (req, res) => {
+app.post('/usuario', (req, res) => {
     let param = req.body;
     return res.send(param);
 });
