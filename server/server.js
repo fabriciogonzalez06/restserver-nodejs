@@ -22,6 +22,6 @@ app.post('/usuario', (req, res) => {
 });
 
 
-app.listen(process.env.port, () => {
-    console.log(`escuchando el puerto ${process.env.port}`);
+app.listen(process.env.PORT, () => {
+    console.log(`escuchando el puerto ${process.env.PORT}`);
 });
