@@ -1,5 +1,6 @@
 require('./config/config');
 
+const mongoose = require('mongoose');
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -11,16 +12,22 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
+//requerir rutas 
+app.use(require('./routes/usuarioRoutes'));
 
-app.get('/usuario', (req, res) => {
-    res.send('hola desde node');
+
+
+mongoose.connect(process.env.URLDB, {
+
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useUnifiedTopology: true
+
+}, (err) => {
+    if (err) throw err;
+
+    console.log('DB online');
 });
-
-app.post('/usuario', (req, res) => {
-    let param = req.body;
-    return res.send(param);
-});
-
 
 app.listen(process.env.PORT, () => {
     console.log(`escuchando el puerto ${process.env.PORT}`);
