@@ -12,8 +12,8 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 
-//requerir rutas 
-app.use(require('./routes/usuarioRoutes'));
+//requerir rutas
+app.use(require('./routes/index'));
 
 
 

@@ -1,11 +1,16 @@
 const express = require("express");
 const app = express();
 const bcrypt = require("bcrypt");
+
+const {
+    verificaToken,
+    verificaAdmin_role
+} = require('../middlewares/auth');
 const _ = require("underscore");
 
 const Usuario = require("../models/usuarioModel");
 
-app.get("/usuarios", (req, res) => {
+app.get("/usuarios", verificaToken, (req, res) => {
     //obtener desde donde quiere obtener los registros
     //cuando son opcionales se reciben en query
     let desde = req.query.desde || 0;
@@ -40,7 +45,7 @@ app.get("/usuarios", (req, res) => {
         });
 });
 
-app.post("/usuario", (req, res) => {
+app.post("/usuario", [verificaToken, verificaAdmin_role], (req, res) => {
     let param = req.body;
 
     let usuario = new Usuario({
@@ -67,7 +72,7 @@ app.post("/usuario", (req, res) => {
     });
 });
 
-app.put("/usuario/:id", (req, res) => {
+app.put("/usuario/:id", [verificaToken, verificaAdmin_role], (req, res) => {
     let id = req.params.id;
     //recordar que no queremos actualizar algunos campos de esa manera
     //funcion pick del underscore de las propiedades que si se pueden actualizar
@@ -98,7 +103,7 @@ app.put("/usuario/:id", (req, res) => {
 
 
 //metodo para borrar usuario 
-app.delete('/usuario/:id', function(req, res) {
+app.delete('/usuario/:id', [verificaToken, verificaAdmin_role], function(req, res) {
 
     let id = req.params.id;
 
@@ -135,7 +140,7 @@ app.delete('/usuario/:id', function(req, res) {
 });
 
 //ruta para desactivar usuario
-app.put('/usuario/desactivar/:id', (req, res) => {
+app.put('/usuario/desactivar/:id', verificaToken, (req, res) => {
 
     let id = req.params.id;
 
