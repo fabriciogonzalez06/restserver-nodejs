@@ -38,7 +38,9 @@ let verificaToken = (req, res, next) => {
     });
 };
 
-
+//=======================================================================
+// Middleware para verificar el rol de la persona                                                                       
+//=======================================================================
 let verificaAdmin_role = (req, res, next) => {
 
     let usuario = req.usuario;
@@ -59,7 +61,41 @@ let verificaAdmin_role = (req, res, next) => {
 
 }
 
+
+//=======================================================================
+// Middleware para verificar el token para una imagen que se quiere traer                                                                      
+//=======================================================================
+let verificaTokenImg = (req, res, next) => {
+
+    let token = req.query.token;
+
+    //verificar token
+    jwt.verify(token, process.env.SEED, (err, decoded) => {
+
+        if (err) {
+            return res.status(401).send({
+                ok: false,
+                error: {
+                    message: 'Token no válido'
+                },
+                err
+            });
+        } else {
+
+            req.usuario = decoded.usuario;
+
+            next();
+        }
+
+
+
+    });
+
+}
+
+
 module.exports = {
     verificaToken,
-    verificaAdmin_role
+    verificaAdmin_role,
+    verificaTokenImg
 }
